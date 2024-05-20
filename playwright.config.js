@@ -1,20 +1,10 @@
-const { defineConfig, devices } = require('@playwright/test');
-
-module.exports = defineConfig({
+module.exports = {
+  testDir: './tests',
   reporter: [
-    ['dot'],
+    ['list'],
     ['junit', { outputFile: 'playwright-report/results.xml' }]
   ],
   use: {
-    browserName: 'chromium',
-    headless: true, // Set to true for CI environments
-    baseURL: 'http://localhost:8080',
-    screenshot: 'only-on-failure',
+    headless: true,
   },
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-  ],
-});
+};
