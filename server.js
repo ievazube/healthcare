@@ -14,6 +14,11 @@ app.use(cors());
 // Define Routes
 app.use('/api/auth', authRoutes);
 
+// Example route
+app.get('/', (req, res) => {
+    res.send('Healthcare system API is running');
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

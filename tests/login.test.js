@@ -1,18 +1,12 @@
-const { chromium } = require('playwright');
+const { test, expect } = require('@playwright/test');
 
-(async () => {
-    const browser = await chromium.launch({ headless: false }); // Set headless: false to see the browser actions
-    const page = await browser.newPage();
-
-    // Increase the timeout to 60 seconds
-    await page.setDefaultTimeout(60000);
-
+test('Login test for healthcare system', async ({ page }) => {
     try {
-        console.log('Navigating to the login page...');
-        await page.goto('http://localhost:8080/login');
+        // Increase the timeout for this test
+        test.setTimeout(60000); // 60 seconds
 
-        console.log('Waiting for the username input field...');
-        await page.waitForSelector('input[name="username"]', { timeout: 60000 });
+        console.log('Navigating to the login page...');
+        await page.goto('http://localhost:3001/login', { timeout: 60000 });
 
         console.log('Filling in the username...');
         await page.fill('input[name="username"]', 'testuser');
@@ -24,12 +18,13 @@ const { chromium } = require('playwright');
         await page.click('button[name="login"]');
 
         console.log('Waiting for the success message...');
-        const successMessage = await page.waitForSelector('#success-message', { timeout: 60000 });
-        const messageText = await successMessage.textContent();
-        console.log('Success message:', messageText);
+        await page.waitForSelector('#success-message', { timeout: 30000 });
+
+        const successMessage = await page.textContent('#success-message');
+        console.log('Success message:', successMessage);
+        expect(successMessage).toBe('Login successful');
     } catch (error) {
-        console.error('An error occurred during the test execution:', error);
-    } finally {
-        await browser.close();
+        console.error('Test failed:', error);
+        throw error; // Re-throw the error to ensure the test fails
     }
-})();
+});
