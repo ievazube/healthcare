@@ -8,9 +8,9 @@ test('Login test for healthcare system', async ({ page }) => {
   await page.fill('input[name="password"]', 'password123');
 
   // Submit the login form
-  await page.click('button[type="submit"]');
+  await page.click('button[type="login"]');
 
   // Check for successful login (assuming a redirect to the homepage or a success message)
-  await expect(page).toHaveURL('http://localhost:3000/dashboard'); // or the URL where the user is redirected after login
+  await expect(page).toHaveURL('http://localhost:3001/dashboard'); // or the URL where the user is redirected after login
   await expect(page.locator('text=Welcome, testuser')).toBeVisible(); // assuming a welcome message is displayed after login
 });
