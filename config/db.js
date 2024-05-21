@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 
-const dbURI = 'mongodb://localhost:27017/healthcare'; // Update this to match your database URI
+const dbURI = 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.6'; // Update this to match your database URI
 
 const connectDB = async () => {
     try {

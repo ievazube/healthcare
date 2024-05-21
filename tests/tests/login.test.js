@@ -2,7 +2,7 @@ const { test, expect } = require('@playwright/test');
 
 test('Login test for healthcare system', async ({ page }) => {
   // Navigate to the login page
-  await page.goto('http://localhost:3001/login');
+  await page.goto('http://localhost:3000/login');
 
   // Add a log to check if the page is loaded
   console.log('Navigated to the login page');
@@ -30,7 +30,7 @@ test('Login test for healthcare system', async ({ page }) => {
   await page.waitForNavigation();
 
   // Check for successful login (assuming a redirect to the dashboard or a success message)
-  await expect(page).toHaveURL('http://localhost:3001/dashboard'); // Adjust the URL as needed
+  await expect(page).toHaveURL('http://localhost:3000/dashboard'); // Adjust the URL as needed
   await expect(page.locator('text=Welcome, testuser')).toBeVisible(); // Adjust the welcome message as needed
 
   // Take a screenshot after successful login
