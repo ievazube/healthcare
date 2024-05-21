@@ -1,18 +1,14 @@
 const express = require('express');
-const connectDB = require('./config/db');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const User = require('./models/User'); // Adjust the path based on your project structure
+const User = require('c:/Users/Ieva/healthcare-system//models/User'); // Adjust the path based on your project structure
 
-const authRoutes = require('./routes/authRoutes');
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-// Connect Database
-connectDB();
-
-// Init Middleware
-app.use(express.json());
+// Middleware
+app.use(bodyParser.json());
 app.use(cors());
 
 // MongoDB connection
@@ -20,8 +16,21 @@ mongoose.connect('mongodb://localhost:27017/healthcare', { useNewUrlParser: true
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err));
 
+// Registration route
+app.post('http://localhost:3001/register', async (req, res) => {
+    const { username, password } = req.body;
+    const user = new User({ username, password });
+
+    try {
+        await user.save();
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (err) {
+        res.status(500).json({ message: 'Error registering user', error: err });
+    }
+});
+
 // Login route
-app.post('/login', async (req, res) => {
+app.post('http://localhost:3001/login', async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
 
@@ -32,14 +41,6 @@ app.post('/login', async (req, res) => {
     return res.status(200).json({ message: 'Login successful', user });
 });
 
-// Define Routes
-app.use('/api/auth', authRoutes);
-
-// Example route
-app.get('/', (req, res) => {
-    res.send('Healthcare system API is running');
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
